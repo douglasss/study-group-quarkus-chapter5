@@ -3,6 +3,7 @@ package quarkus.transactions;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -49,6 +50,29 @@ public class TransactionResource {
 
         accountServiceProgrammatic.transact(accountNumber, amount); // Calls the service in the same way as done previously with a CDI bean
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/async/{accountNumber}") // Uses a different URL path for the asynchronous version. Return type is now CompletionStage<Void> instead of Response.
+    public CompletionStage<Void> newTransactionAsync(
+            @PathParam("accountNumber")
+            Long accountNumber, BigDecimal amount) {
+        return accountService.transactAsync(accountNumber, amount); // Method body modified to return the result of REST client call
+    }
+
+    @POST
+    @Path("/api/async/{accountNumber}")
+    public CompletionStage<Void> newTransactionWithApiAsync(
+            @PathParam("accountNumber")
+            Long accountNumber, BigDecimal amount) throws MalformedURLException {
+
+        AccountServiceProgrammatic accountServiceProgrammatic =
+                RestClientBuilder.newBuilder()
+                        .baseUrl(new URL(accountServiceUrl))
+                        .build(AccountServiceProgrammatic.class);
+
+        return accountServiceProgrammatic.transactAsync(accountNumber,
+                amount); // As with the newTransactionAsync method, instead of returning a Response to indicate everything is OK, returns the CompletionStage returned from the REST client call instead
     }
 
 }
