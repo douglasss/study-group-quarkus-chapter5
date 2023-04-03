@@ -27,6 +27,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @RegisterClientHeaders
 @Produces(MediaType.APPLICATION_JSON) // Sets all methods of the service to return JSON
 @RegisterProvider(AccountRequestFilter.class)
+@RegisterProvider(AccountExceptionMapper.class)
 public interface AccountService {
 
     // Method for retrieving the account balance, with HTTP method and Path annotations
@@ -39,7 +40,7 @@ public interface AccountService {
     // Method for transacting on an account, with HTTP method and Path annotations
     @POST
     @Path("/{accountNumber}/transaction")
-    Map<String, List<String>> transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
+    Map<String, List<String>> transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount) throws AccountNotFoundException;
 
     @POST
     @Path("{accountNumber}/transaction")

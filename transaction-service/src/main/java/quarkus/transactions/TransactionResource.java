@@ -3,6 +3,8 @@ package quarkus.transactions;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -34,7 +36,15 @@ public class TransactionResource {
     public Map<String, List<String>> newTransaction(
             @PathParam("accountNumber")
             Long accountNumber, BigDecimal amount) {
-        return accountService.transact(accountNumber, amount); // Calls the external service method
+        try {
+            return accountService.transact(accountNumber, amount); // Calls the external service method
+        } catch (Exception t) {
+            t.printStackTrace();
+            Map<String, List<String>> response = new HashMap<>();
+            response.put("EXCEPTION - " + t.getClass(),
+                    Collections.singletonList(t.getMessage()));
+            return response;
+        }
     }
 
     @POST
