@@ -26,6 +26,6 @@ public interface AccountService {
     // Method for transacting on an account, with HTTP method and Path annotations
     @POST
     @Path("/{accountNumber}/transaction")
-    void transact(Long accountNumber, BigDecimal amount);
+    void transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
 
 }
