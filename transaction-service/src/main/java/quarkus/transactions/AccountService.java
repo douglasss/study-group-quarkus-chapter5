@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("/accounts") // Defines the path of the service, excluding the base URL portion
@@ -25,6 +26,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 //org.eclipse.microprofile.rest.client.propagateHeaders
 @RegisterClientHeaders
 @Produces(MediaType.APPLICATION_JSON) // Sets all methods of the service to return JSON
+@RegisterProvider(AccountRequestFilter.class)
 public interface AccountService {
 
     // Method for retrieving the account balance, with HTTP method and Path annotations
