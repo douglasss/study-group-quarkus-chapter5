@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("/account") // Defines the path of the service, excluding the base URL portion
-@RegisterRestClient // Indicates that the interface should have a CDI bean created that can be injected into classes
+@RegisterRestClient(configKey = "account-service") // Indicates that the interface should have a CDI bean created that can be injected into classes
 @Produces(MediaType.APPLICATION_JSON) // Sets all methods of the service to return JSON
 public interface AccountService {
 
