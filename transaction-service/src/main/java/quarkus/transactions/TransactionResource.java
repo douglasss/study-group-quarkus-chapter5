@@ -3,6 +3,7 @@ package quarkus.transactions;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -45,6 +46,29 @@ public class TransactionResource {
         service.transact(accountNumber, amount);
 
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/async/{accountNumber}")
+    public CompletionStage<Void> newTransactionAsync(
+            @PathParam("accountNumber")
+            Long accountNumber, BigDecimal amount) {
+        return accountService.transactAsync(accountNumber, amount);
+    }
+
+    @POST
+    @Path("/api/async/{accountNumber}")
+    public CompletionStage<Void> newTransactionApiAsync(
+            @PathParam("accountNumber")
+            Long accountNumber, BigDecimal amount) throws MalformedURLException {
+
+        AccountServiceProgrammatic service = RestClientBuilder.newBuilder()
+                .baseUrl(new URL("http://localhost:8080"))
+                .connectTimeout(500, TimeUnit.MILLISECONDS)
+                .readTimeout(1200, TimeUnit.MILLISECONDS)
+                .build(AccountServiceProgrammatic.class);
+
+        return service.transactAsync(accountNumber, amount);
     }
 
 }

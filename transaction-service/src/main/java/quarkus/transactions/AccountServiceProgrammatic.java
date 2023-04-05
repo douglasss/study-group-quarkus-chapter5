@@ -1,6 +1,7 @@
 package quarkus.transactions;
 
 import java.math.BigDecimal;
+import java.util.concurrent.CompletionStage;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,6 +23,12 @@ public interface AccountServiceProgrammatic {
     @POST
     @Path("/{accountNumber}/transaction")
     void transact(
+            @PathParam("accountNumber")
+            Long accountNumber, BigDecimal amount);
+
+    @POST
+    @Path("/{accountNumber}/transaction")
+    CompletionStage<Void> transactAsync(
             @PathParam("accountNumber")
             Long accountNumber, BigDecimal amount);
 
