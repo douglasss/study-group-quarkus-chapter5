@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("/accounts")
@@ -21,6 +22,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @Produces(MediaType.APPLICATION_JSON)
 @ClientHeaderParam(name = "class-level-param", value = "AccountService interface")
 @RegisterClientHeaders
+@RegisterProvider(AccountRequestFilter.class)
 public interface AccountService {
 
     @GET
