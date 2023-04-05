@@ -3,6 +3,8 @@ package quarkus.transactions;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
@@ -24,11 +26,10 @@ public class TransactionResource {
 
     @POST
     @Path("/{accountNumber}")
-    public Response newTransaction(
+    public Map<String, List<String>> newTransaction(
             @PathParam("accountNumber")
             Long accountNumber, BigDecimal amount) {
-        accountService.transact(accountNumber, amount);
-        return Response.ok().build();
+        return accountService.transact(accountNumber, amount);
     }
 
     @POST
@@ -50,7 +51,7 @@ public class TransactionResource {
 
     @POST
     @Path("/async/{accountNumber}")
-    public CompletionStage<Void> newTransactionAsync(
+    public CompletionStage<Map<String, List<String>>> newTransactionAsync(
             @PathParam("accountNumber")
             Long accountNumber, BigDecimal amount) {
         return accountService.transactAsync(accountNumber, amount);
