@@ -1,4 +1,7 @@
+
 # Clients for consuming other microservices
+
+Code following the Chapter 5 from the book "Kubernetes Native Microservices with Quarkus and MicroProfile"
 
 ## Local execution
 
@@ -21,11 +24,8 @@ kubectl apply -f postgresql_kubernetes.yml
 ### Deploy application
 
 ```shell script
-eval $(minikube -p minikube docker-env)
 cd account-service
 mvn clean package -Dquarkus.kubernetes.deploy=true -DskipTests
 cd ../transaction-service
 mvn clean package -Dquarkus.kubernetes.deploy=true -DskipTests
 ```
-
-Use `minikube service list` to find the URL for the `account-service` and `transaction-service` to interact with the services using `curl`.
