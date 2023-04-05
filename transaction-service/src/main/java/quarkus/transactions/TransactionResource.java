@@ -3,6 +3,7 @@ package quarkus.transactions;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -29,7 +30,14 @@ public class TransactionResource {
     public Map<String, List<String>> newTransaction(
             @PathParam("accountNumber")
             Long accountNumber, BigDecimal amount) {
-        return accountService.transact(accountNumber, amount);
+        try {
+            return accountService.transact(accountNumber, amount);
+        } catch (Exception e) {
+            return Collections.singletonMap(
+                    "Exception - " + e.getClass(),
+                    Collections.singletonList(e.getMessage())
+            );
+        }
     }
 
     @POST

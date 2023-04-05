@@ -23,6 +23,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @ClientHeaderParam(name = "class-level-param", value = "AccountService interface")
 @RegisterClientHeaders
 @RegisterProvider(AccountRequestFilter.class)
+@RegisterProvider(AccountExceptionMapper.class)
 public interface AccountService {
 
     @GET
@@ -35,7 +36,7 @@ public interface AccountService {
     @Path("/{accountNumber}/transaction")
     Map<String, List<String>> transact(
             @PathParam("accountNumber")
-            Long accountNumber, BigDecimal amount);
+            Long accountNumber, BigDecimal amount) throws AccountNotFoundException;
 
     @POST
     @Path("/{accountNumber}/transaction")
